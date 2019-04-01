@@ -149,7 +149,11 @@ public class registerStudent extends AppCompatActivity {
                     qualification.setError("Enter Qualification!!");
                     flag = 1;
                 }
-
+                if(TextUtils.isEmpty(x))
+                {
+                    city.setError("Enter City");
+                    flag = 1;
+                }
 
                 String regex = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
                 Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
@@ -253,6 +257,15 @@ public class registerStudent extends AppCompatActivity {
                     }
                     if (!Pass.equals(Cpy_Pass)) {
                         pass_cpy.setError("Password Mismatch");
+                        flag++;
+                    }
+                    if(TextUtils.isEmpty(Quali)){
+                        qualification.setError("Enter Qualification!!");
+                        flag++;
+                    }
+                    if(TextUtils.isEmpty(x))
+                    {
+                        city.setError("Enter City");
                         flag++;
                     }
                     Toast.makeText(getApplicationContext(), "Registration could not be completed!\nPlease Try again", Toast.LENGTH_SHORT).show();
