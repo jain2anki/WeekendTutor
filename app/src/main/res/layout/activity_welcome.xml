@@ -1,39 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
     android:background="@drawable/welcome_page"
     tools:context=".Welcome">
 
-    <Button
-        android:id="@+id/button_a"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="400dp"
-        android:background="@drawable/oval_button"
-        android:onClick="login_tutor"
-        android:text="I AM A TUTOR"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:typeface="sans" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/button_b"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/button_a"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
-        android:background="@drawable/oval_button"
-        android:onClick="login_student"
-        android:text="I NEED A TUTOR"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:typeface="sans" />
-</RelativeLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="70dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/button_a"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:background="@drawable/oval_button"
+                android:onClick="login_tutor"
+                android:text="I AM A TUTOR"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:typeface="sans" />
+
+            <Button
+                android:id="@+id/button_b"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/oval_button"
+                android:onClick="login_student"
+                android:text="I NEED A TUTOR"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:typeface="sans" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

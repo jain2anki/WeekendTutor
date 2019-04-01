@@ -8,6 +8,11 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".CourseList"
     tools:showIn="@layout/app_bar_course_list">
+    
+    <com.miguelcatalan.materialsearchview.MaterialSearchView
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -27,12 +32,13 @@
                 android:layout_height="50dp"
                 android:background="@drawable/custom2"
                 android:queryBackground="@color/white"
-                android:queryHint="Search a Course" />
+                android:queryHint="Search a Course"
+                />
         </LinearLayout>
 
 
-        <ListView
-            android:id="@+id/listView"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="105dp"
@@ -46,7 +52,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"></ProgressBar>
+        android:layout_centerVertical="true"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/no_courses_found"
@@ -55,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="No Courses Found"
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textColor="@color/common_google_signin_btn_text_dark_pressed"
         android:textSize="25sp"
         android:visibility="invisible" />
 </RelativeLayout>

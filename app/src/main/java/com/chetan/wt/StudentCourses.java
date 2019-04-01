@@ -3,7 +3,9 @@ package com.chetan.wt;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -50,11 +52,16 @@ public class StudentCourses extends AppCompatActivity {
 
         final ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myArrayList)
         {
+            @RequiresApi(api = Build.VERSION_CODES.P)
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView text = (TextView) view.findViewById(android.R.id.text1);
                 text.setTextColor(Color.WHITE);
+                text.setTextSize(18);
+                text.setLineHeight(100);
+                text.setLastBaselineToBottomHeight(50);
+                text.setFirstBaselineToTopHeight(100);
                 return view;
             }
         };
@@ -63,7 +70,7 @@ public class StudentCourses extends AppCompatActivity {
 
 
 
-        
+
         reff.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -73,7 +80,7 @@ public class StudentCourses extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     course = ds.getValue(Course.class);
                     key.add(ds.getKey());
-                    myArrayList.add("\n" + course.getName() + "\n" + course.getDate() + "     " + course.getStart() + "\n");
+                    myArrayList.add(course.getName() + "\n" + course.getDate() + "\n" + course.getStart());
                 }
 
                 //else
