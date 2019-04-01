@@ -110,15 +110,16 @@ public class loginTutor extends Activity {
                                     e.printStackTrace();
                                 }
 
-                                refTut.child(UserID).addValueEventListener(new ValueEventListener() {
+                                refTut.child(UserID).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         pb.dismiss();
                                         if(dataSnapshot.exists()){
 
+                                            refTut.removeEventListener(this);
                                             Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_LONG).show();
-                                            //sp.edit().putString("userClass", "Tutor").apply();
-                                            //sp.edit().putBoolean("loginStatus", true).apply();
+                                            sp.edit().putString("userClass", "Tutor").apply();
+                                            sp.edit().putBoolean("loginStatus", true).apply();
 
                                             Intent intent = new Intent(loginTutor.this, ListOfCourseTutor.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -128,6 +129,7 @@ public class loginTutor extends Activity {
 
                                         }
                                         else{
+                                            refTut.removeEventListener(this);
                                             Toast.makeText(getApplicationContext(), "Account does not exist\nPlease re-check your credentials!", Toast.LENGTH_SHORT).show();
                                         }
                                     }
@@ -135,10 +137,10 @@ public class loginTutor extends Activity {
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError databaseError) {
                                         pb.dismiss();
+                                        refTut.removeEventListener(this);
                                         Toast.makeText(getApplicationContext(), "Error in Login!", Toast.LENGTH_SHORT).show();
                                     }
                                 });
-
 
                             }
                             else

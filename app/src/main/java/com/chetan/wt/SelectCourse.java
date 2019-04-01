@@ -1,3 +1,4 @@
+
 package com.chetan.wt;
 import android.app.ActionBar;
 import android.content.DialogInterface;
@@ -273,7 +274,7 @@ public class SelectCourse extends AppCompatActivity {
             }
         });
 
-        tutor.setOnClickListener(new View.OnClickListener() {
+        iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

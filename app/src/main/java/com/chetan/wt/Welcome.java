@@ -27,29 +27,28 @@ public class Welcome extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        /*sp = getSharedPreferences("login",MODE_PRIVATE);
+        sp = getSharedPreferences("login",MODE_PRIVATE);
         login = sp.getBoolean("loginStatus",false);
         userClass = sp.getString("userClass", "");
 
         if(login == true){
             if(userClass.equals("Student"))
             {
-                Intent intent = new Intent(Welcome.this, CourseList.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                Intent intentStu = new Intent(Welcome.this, CourseList.class);
+                intentStu.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intentStu.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intentStu);
                 finish();
             }
             else if(userClass.equals("Tutor"))
             {
-                Intent intent = new Intent(Welcome.this, CourseList.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                Intent intentTut = new Intent(Welcome.this, ListOfCourseTutor.class);
+                intentTut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intentTut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intentTut);
                 finish();
             }
         }
-        */
     
     }
 

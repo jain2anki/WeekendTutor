@@ -43,6 +43,7 @@ public class delete_multiple_courses extends AppCompatActivity {
     ArrayList<Integer> price;
     ArrayList<Integer> tutor_wallet;
     ArrayList<String> tutor_name;
+    String required_id;
     private FirebaseAuth SID;
 
     @Override
@@ -60,6 +61,7 @@ public class delete_multiple_courses extends AppCompatActivity {
         tutor_name = new ArrayList<String>();
         price = new ArrayList<>();
         tutor_wallet = new ArrayList<>();
+
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         StudentID = user.getUid();

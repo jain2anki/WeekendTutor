@@ -1,13 +1,17 @@
 package com.chetan.wt;
 
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,13 +23,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class TutorWallet extends AppCompatActivity {
 
-    DatabaseReference reff;
+    DatabaseReference reff, reff_trans;
     String TutorID;
     Button addMoney;
     EditText money;
     int walletBalance, temp;
+    Transaction trans = new Transaction();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +81,39 @@ public class TutorWallet extends AppCompatActivity {
                     money.setVisibility(View.VISIBLE);
             }
         });
+
+        final ListView listView = (ListView) findViewById(R.id.Transactions);
+        final ArrayList<String> myArrayList = new ArrayList<>();
+        reff_trans = FirebaseDatabase.getInstance().getReference("Tutor Transactions").child(TutorID);
+
+        final ArrayAdapter<String> myArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myArrayList)
+        {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView text = (TextView) view.findViewById(android.R.id.text1);
+                text.setTextColor(Color.WHITE);
+                return view;
+            }
+        };
+        reff_trans.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                myArrayList.clear();
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    trans = ds.getValue(Transaction.class);
+                    myArrayList.add("\n" + trans.getAmount()+ trans.getName()+ trans.getCourse_name()+"\n"+trans.getDate()+"\n");
+                }
+                listView.setAdapter(myArrayAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
     }
 

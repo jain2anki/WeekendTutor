@@ -113,14 +113,16 @@ public class loginStudent extends Activity {
                                     e.printStackTrace();
                                 }
 
-                                refStud.child(UserID).addValueEventListener(new ValueEventListener() {
+                                refStud.child(UserID).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         pb.dismiss();
                                         if(dataSnapshot.exists()) {
+
+                                            refStud.removeEventListener(this);
                                             Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_LONG).show();
-                                            //sp.edit().putString("userClass", "Student").apply();
-                                            //sp.edit().putBoolean("loginStatus", true).apply();
+                                            sp.edit().putString("userClass", "Student").apply();
+                                            sp.edit().putBoolean("loginStatus", true).apply();
 
                                             Intent intent = new Intent(loginStudent.this, CourseList.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -129,6 +131,7 @@ public class loginStudent extends Activity {
                                             finish();
                                         }
                                         else {
+                                            refStud.removeEventListener(this);
                                             //Log.d("TAG", UserClass);
                                             Toast.makeText(getApplicationContext(), "Account does not exist\nPlease re-check your credentials!", Toast.LENGTH_SHORT).show();
                                         }
@@ -137,6 +140,7 @@ public class loginStudent extends Activity {
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError databaseError) {
                                         pb.dismiss();
+                                        refStud.removeEventListener(this);
                                         Toast.makeText(getApplicationContext(), "Error in Login!", Toast.LENGTH_SHORT).show();
                                     }
                                 });

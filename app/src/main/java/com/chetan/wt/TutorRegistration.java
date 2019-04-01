@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -59,6 +60,7 @@ public class TutorRegistration extends AppCompatActivity {
     Bitmap bitmap;
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     int flag=0;
+    SharedPreferences sp;
     private StorageReference mStorageRef;
     private ProgressDialog pb;
     private FirebaseAuth fa;
@@ -87,6 +89,7 @@ public class TutorRegistration extends AppCompatActivity {
         setContentView(R.layout.activity_tutor_registration);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.startblue1)));
         setTitle("Tutor Registration");
+        sp = getSharedPreferences("login",MODE_PRIVATE);
         nameview=(EditText)findViewById(R.id.name);
         emailview=(EditText)findViewById(R.id.email);
         password=(EditText)findViewById(R.id.password);
@@ -195,6 +198,8 @@ public class TutorRegistration extends AppCompatActivity {
                                     us.setWallet(0);
                                 }
                                 dbr.child(id).setValue(us);
+                                sp.edit().putString("userClass", "Tutor").apply();
+                                sp.edit().putBoolean("loginStatus", true).apply();
                                 startActivity(intobj);
                             }
                             else{
