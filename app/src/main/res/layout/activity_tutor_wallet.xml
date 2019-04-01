@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:background="@drawable/book"
     android:layout_height="match_parent"
-    tools:context=".TutorWallet">
+    tools:context=".StudentWallet">
 
     <ImageView
         android:id="@+id/image"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:padding="5dp"
         app:srcCompat="@drawable/rupee" />
 
     <TextView
@@ -34,23 +35,25 @@
         android:textColor="#fff" />
 
     <EditText
-        android:layout_width="match_parent"
         android:id="@+id/money"
-        android:inputType="number"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/textView4"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:visibility="gone"
-        />
+        android:layout_below="@+id/textView4"
+        android:layout_marginTop="10dp"
+        android:inputType="number"
+        android:textColor="#fff"
+        android:visibility="gone" />
 
     <Button
-        android:layout_width="match_parent"
         android:id="@+id/addMoney"
-        android:background="@drawable/buttonstyle"
-        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/money"
-        android:text="Add Money" />
+        android:layout_marginTop="20dp"
+        android:background="@drawable/buttonstyle"
+        android:text="Add Money"
+        android:textSize="18sp" />
+
     <TextView
         android:id="@+id/Trans"
         android:layout_width="match_parent"
@@ -75,6 +78,5 @@
         android:dividerHeight="1dp"
         android:footerDividersEnabled="true"
         android:headerDividersEnabled="true"></ListView>
-
 
 </RelativeLayout>

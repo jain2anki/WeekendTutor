@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
+        <!--TextView
             android:id="@+id/pagename"
             android:textColor="#ffff"
             android:layout_width="wrap_content"
@@ -18,7 +18,7 @@
             android:layout_centerHorizontal="true"
             android:text="Tutor Registration"
             android:textSize="30dp"
-            />
+            /-->
         <TextView
             android:id="@+id/nameview"
             android:textColor="#ffff"

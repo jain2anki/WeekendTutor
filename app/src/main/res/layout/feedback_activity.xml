@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/book"
     tools:context=".feedback_activity">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,13 +17,14 @@
         android:layout_marginRight="16dp"
         android:orientation="vertical">
 
-        <TextView
+        <!--TextView
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:text="FEEDBACK"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="40sp" />
+
+            android:textSize="40sp"
+            android:textColor="#fff"/-->
 
 
         <TextView
@@ -30,8 +32,8 @@
             android:layout_height="50dp"
             android:textSize="20sp"
             android:text="@string/email_address"
-            android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="#fff"/>
 
 
         <EditText
@@ -39,13 +41,15 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:hint="@string/email_value"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textColor="#fff"/>
 
         <Spinner
             android:id="@+id/spinner_1"
             android:layout_width="250dp"
             android:layout_height="50dp"
-            android:entries="@array/users">
+            android:entries="@array/users"
+            >
 
 
         </Spinner>
@@ -56,8 +60,9 @@
             android:layout_height="50dp"
             android:text="@string/rating_name"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-            android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold" />
+
+            android:textStyle="bold"
+            android:textColor="#fff"/>
 
         <RatingBar
             android:id="@+id/ratingBar"
@@ -69,7 +74,7 @@
             android:layout_height="50dp"
             android:textSize="20sp"
             android:text="@string/feedback"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="#fff"
             android:textStyle="bold" />
 
         <EditText
@@ -80,7 +85,8 @@
             android:inputType="textMultiLine"
             android:textAlignment="gravity"
             android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textColor="#fff"/>
 
         <Button
             android:id="@+id/buttonsave"
@@ -90,11 +96,11 @@
             android:layout_marginLeft="100dp"
             android:layout_marginTop="50dp"
             android:layout_marginBottom="200dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/buttonstyle"
             android:text="@string/send_button"
             android:textAlignment="center"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textSize="15sp"
+             />
     </LinearLayout>
 </RelativeLayout>
 </ScrollView>

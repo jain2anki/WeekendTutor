@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,6 +61,7 @@ public class CourseList extends AppCompatActivity implements NavigationView.OnNa
     MyAdapter myAdapter;
     ArrayAdapter adapter;
     String StudentID="1";
+    SharedPreferences sp;
 
 
     @Override
@@ -72,6 +74,8 @@ public class CourseList extends AppCompatActivity implements NavigationView.OnNa
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setBackgroundColor(getResources().getColor(R.color.startblue1));
 
+        sp = getSharedPreferences("login",MODE_PRIVATE);
+        
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -409,7 +413,9 @@ public class CourseList extends AppCompatActivity implements NavigationView.OnNa
         } else if (id == R.id.logout) {
             FirebaseAuth fbu=FirebaseAuth.getInstance();
             fbu.signOut();
-            //Welcome.loginState = 0;
+            sp.edit().putBoolean("loginStatus", false).apply();
+            sp.edit().putString("userClass", "").apply();
+            
             Toast.makeText(getApplicationContext(),"logout successful",Toast.LENGTH_SHORT).show();
             Intent it=new Intent(getApplicationContext(),Welcome.class);
             startActivity(it);

@@ -2,6 +2,7 @@ package com.chetan.wt;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -56,6 +57,7 @@ public class registerStudent extends AppCompatActivity {
     private FirebaseAuth fa;
     private DatabaseReference dataBase;
     private StorageReference storageReference;
+    SharedPreferences sp;
     //private FusedLocationProviderClient mFusedLocationClient;
 
     String downloadUrl = new String("https://i.imgur.com/tGbaZCY.jpg");
@@ -85,6 +87,7 @@ public class registerStudent extends AppCompatActivity {
         setContentView(R.layout.activity_register_student);
 
         Intent intent = getIntent();
+        sp = getSharedPreferences("login",MODE_PRIVATE);
 
         mAuth = FirebaseAuth.getInstance();
         fa = FirebaseAuth.getInstance();
@@ -101,6 +104,7 @@ public class registerStudent extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pb.show();
                 flag = 0;
                 final Intent Newpage = new Intent(registerStudent.this, loginStudent.class);
 
@@ -204,7 +208,12 @@ public class registerStudent extends AppCompatActivity {
                                 dataBase.child(id).setValue(student_user);
 
                                 pb.dismiss();
+                                sp.edit().putString("userClass", "Student").apply();
+                                sp.edit().putBoolean("loginStatus", true).apply();
+                                
                                 Toast.makeText(getApplicationContext(), "Registration Successful", Toast.LENGTH_LONG).show();
+                                Newpage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                Newpage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(Newpage);
                             }
                             else {
@@ -218,12 +227,15 @@ public class registerStudent extends AppCompatActivity {
                                 }
 
                                 Intent intent = new Intent(registerStudent.this, loginStudent.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                             }
                         }
                     });
                 }
                 else {
+                    pb.dismiss();
                     if (!name_matcher.matches()) {
                         name.setError("Invalid Name!!");
                         flag++;
@@ -267,4 +279,6 @@ public class registerStudent extends AppCompatActivity {
 
 
 }
+
+
 

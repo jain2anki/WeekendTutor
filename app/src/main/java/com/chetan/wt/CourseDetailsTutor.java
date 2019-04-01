@@ -236,7 +236,7 @@ public class CourseDetailsTutor extends AppCompatActivity {
             Date d1 = new Date();
             Date d2 = formatter.parse(coursedate);
             if(d1.compareTo(d2)>=0){
-                course_date.setError("Can't enter past date");
+                course_date.setError("Can't enter past/today's date");
                 flag=0;
             }
 

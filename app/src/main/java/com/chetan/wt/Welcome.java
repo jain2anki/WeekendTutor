@@ -1,6 +1,7 @@
 package com.chetan.wt;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -13,9 +14,9 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Welcome extends AppCompatActivity {
     int flag=0;
-    public static int loginState = 0;
-    private String id;
-    private FirebaseAuth fa;
+    SharedPreferences sp;
+    private boolean login;
+    private String userClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,20 +27,29 @@ public class Welcome extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        /*fa = FirebaseAuth.getInstance();
-        FirebaseUser cuser = fa.getCurrentUser();
-        id = cuser.getUid();
+        sp = getSharedPreferences("login",MODE_PRIVATE);
+        login = sp.getBoolean("loginStatus",false);
+        userClass = sp.getString("userClass", "");
 
-        if(loginState == 1 && id != null)
-        {
-            Intent stu = new Intent(Welcome.this, CourseList.class);
-            startActivity(stu);
+        if(login == true){
+            if(userClass.equals("Student"))
+            {
+                Intent intentStu = new Intent(Welcome.this, CourseList.class);
+                intentStu.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intentStu.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intentStu);
+                finish();
+            }
+            else if(userClass.equals("Tutor"))
+            {
+                Intent intentTut = new Intent(Welcome.this, ListOfCourseTutor.class);
+                intentTut.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intentTut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intentTut);
+                finish();
+            }
         }
-        else if(loginState == 2 && id != null)
-        {
-            Intent tut = new Intent(Welcome.this, ListOfCourseTutor.class);
-            startActivity(tut);
-        }*/
+    
     }
 
     public void login_tutor(View view){

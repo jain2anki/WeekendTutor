@@ -83,7 +83,8 @@
                 android:layout_margin="5dp"
                 android:padding="8dp"
                 android:inputType="textPersonName"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#fff"/>
             <TextView
                 android:id="@+id/abc"
                 android:layout_width="match_parent"
@@ -104,7 +105,8 @@
                 android:background="@drawable/myborder"
                 android:padding="8dp"
                 android:inputType="textPersonName"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#fff"/>
 
             <Button
                 android:id="@+id/changeEmail"
@@ -134,7 +136,8 @@
                 android:background="@drawable/myborder"
                 android:padding="8dp"
                 android:inputType="textPersonName"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#fff"/>
 
             <TextView
                 android:id="@+id/npasss"
@@ -155,7 +158,8 @@
                 android:background="@drawable/myborder"
                 android:padding="8dp"
                 android:password="true"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#fff"/>
 
             <Button
                 android:id="@+id/changePass"

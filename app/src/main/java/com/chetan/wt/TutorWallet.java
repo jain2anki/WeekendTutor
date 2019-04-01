@@ -28,11 +28,11 @@ import java.util.ArrayList;
 public class TutorWallet extends AppCompatActivity {
 
     DatabaseReference reff, reff_trans;
-    Transaction trans;
     String TutorID;
     Button addMoney;
     EditText money;
     int walletBalance, temp;
+    Transaction trans = new Transaction();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,30 +60,27 @@ public class TutorWallet extends AppCompatActivity {
             }
         });
 
-        addMoney = findViewById(R.id.addMoney);
-        money = findViewById(R.id.money);
+        addMoney=findViewById(R.id.addMoney);
+        money=findViewById(R.id.money);
 
         addMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (money.getVisibility() == View.VISIBLE) {
-                    if (money.getText().toString().length() == 0)
+                if(money.getVisibility()==View.VISIBLE)
+                {
+                    temp = Integer.parseInt(money.getText().toString());
+                    if(walletBalance + temp>100000)
+                        Toast.makeText(getApplicationContext(),"Maximum Wallet Limit is 100000",Toast.LENGTH_SHORT).show();
+                    else{
+                        reff.child("wallet").setValue(walletBalance + temp);
                         money.setVisibility(View.GONE);
-                    else {
-                        temp = Integer.parseInt(money.getText().toString());
-                        if (walletBalance + temp > 100000)
-                            Toast.makeText(getApplicationContext(), "Maximum Wallet Limit is 100000", Toast.LENGTH_SHORT).show();
-                        else {
-                            reff.child("wallet").setValue(walletBalance + temp);
-                            money.setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(), "Money Successfully Added", Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(getApplicationContext(), "Money Successfully Added", Toast.LENGTH_SHORT).show();
                     }
-                } else
+                }
+                else
                     money.setVisibility(View.VISIBLE);
             }
         });
-
 
         final ListView listView = (ListView) findViewById(R.id.Transactions);
         final ArrayList<String> myArrayList = new ArrayList<>();
@@ -118,13 +115,7 @@ public class TutorWallet extends AppCompatActivity {
         });
 
 
-
     }
-
-
-
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

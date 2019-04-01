@@ -34,7 +34,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"
+        android:layout_weight="9.2"
         android:id="@+id/scollview">
 
         <LinearLayout
@@ -150,7 +150,8 @@
                 android:background="@drawable/myborder"
                 android:padding="8dp"
                 android:inputType="time"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#fff"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -224,7 +225,7 @@
         android:id="@+id/Submit"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.8"
         android:text="Submit"
         android:background="@drawable/buttonstyle"
         android:layout_gravity="center_horizontal|bottom"

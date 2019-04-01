@@ -3,10 +3,12 @@ package com.chetan.wt;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,6 +20,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -28,9 +35,12 @@ public class loginTutor extends Activity {
     private String Password;
     private String Mail;
     private Matcher mail_matcher;
-    FirebaseAuth mAuth;
+    FirebaseAuth mAuth, fa;
+    private DatabaseReference refStud, refTut;
+    private String UserID = "", UserClass;
     Button bu;
     private ProgressDialog pb;
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +59,9 @@ public class loginTutor extends Activity {
         pb.setMessage("Logging In...");
 
         mAuth = FirebaseAuth.getInstance();
-
-
+        fa = FirebaseAuth.getInstance();
+        refTut = FirebaseDatabase.getInstance().getReference("users");
+        sp = getSharedPreferences("login",MODE_PRIVATE);
 
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,24 +96,52 @@ public class loginTutor extends Activity {
                 if (mail_matcher.matches() && pass.length() >= 8 && flag == 0) {
                     pb.show();
                     //if(mAuth.getCurrentUser().)
-                    mAuth.signInWithEmailAndPassword(Mail, Password).addOnCompleteListener(loginTutor.this, new OnCompleteListener<AuthResult>() {
+                    mAuth.signInWithEmailAndPassword(Mail, Password)
+                            .addOnCompleteListener(loginTutor.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                
-                                pb.dismiss();
-                                //Welcome.loginState = 2;
 
+                                UserID = fa.getCurrentUser().getUid();
+                                
                                 try {
                                     TimeUnit.SECONDS.sleep(2);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
 
-                                Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
+                                refTut.child(UserID).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        pb.dismiss();
+                                        if(dataSnapshot.exists()){
 
-                                Intent intent = new Intent(loginTutor.this, ListOfCourseTutor.class);
-                                startActivity(intent);
+                                            refTut.removeEventListener(this);
+                                            Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_LONG).show();
+                                            sp.edit().putString("userClass", "Tutor").apply();
+                                            sp.edit().putBoolean("loginStatus", true).apply();
+
+                                            Intent intent = new Intent(loginTutor.this, ListOfCourseTutor.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+                                            finish();
+
+                                        }
+                                        else{
+                                            refTut.removeEventListener(this);
+                                            Toast.makeText(getApplicationContext(), "Account does not exist\nPlease re-check your credentials!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                                        pb.dismiss();
+                                        refTut.removeEventListener(this);
+                                        Toast.makeText(getApplicationContext(), "Error in Login!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
                             }
                             else
                             {
@@ -122,6 +161,7 @@ public class loginTutor extends Activity {
                     });
                 }
                 else {
+                    pb.dismiss();
                     if (!mail_matcher.matches()) {
                         mail.setError("invalid e-mail");
                         Toast.makeText(loginTutor.this, "Invalid E-Mail ID!!", Toast.LENGTH_SHORT).show();
@@ -147,3 +187,4 @@ public class loginTutor extends Activity {
         startActivity(intent);
     }
 }
+

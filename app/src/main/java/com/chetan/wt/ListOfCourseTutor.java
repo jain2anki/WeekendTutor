@@ -27,6 +27,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,6 +55,7 @@ public class ListOfCourseTutor extends AppCompatActivity
     private FirebaseAuth fa;
     private DatabaseReference dbr;
     ProgressBar pg;
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,8 @@ public class ListOfCourseTutor extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        
+        sp = getSharedPreferences("login",MODE_PRIVATE);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -336,14 +340,14 @@ public class ListOfCourseTutor extends AppCompatActivity
         } else if (id == R.id.Logout) {
             FirebaseAuth fbu=FirebaseAuth.getInstance();
             fbu.signOut();
-            //Welcome.loginState = 0;
+            sp.edit().putBoolean("loginStatus", false).apply();
+            sp.edit().putString("userClass", "").apply();
+            
             Toast.makeText(getApplicationContext(),"logout successful",Toast.LENGTH_SHORT).show();
             Intent it=new Intent(getApplicationContext(),Welcome.class);
             startActivity(it);
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_developers) {
+        }  else if (id == R.id.nav_developers) {
             Intent it=new Intent(ListOfCourseTutor.this,developers.class);
             startActivity(it);
 
