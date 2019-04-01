@@ -51,6 +51,30 @@
         android:layout_height="50dp"
         android:layout_below="@+id/money"
         android:text="Add Money" />
+    <TextView
+        android:id="@+id/Trans"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/addMoney"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/custom"
+        android:text="Transactions"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="#fff"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/Transactions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Trans"
+        android:background="@drawable/custom"
+        android:divider="#eee"
+        android:dividerHeight="1dp"
+        android:footerDividersEnabled="true"
+        android:headerDividersEnabled="true"></ListView>
 
 
 </RelativeLayout>
