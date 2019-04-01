@@ -2,9 +2,9 @@ package com.chetan.wt;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -85,6 +85,7 @@ public class registerStudent extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_student);
+        setTitle("Student Registration");
 
         Intent intent = getIntent();
         sp = getSharedPreferences("login",MODE_PRIVATE);
@@ -113,6 +114,7 @@ public class registerStudent extends AppCompatActivity {
                 final TextView pass = (TextView) findViewById(R.id.password);
                 final TextView pass_cpy = (TextView) findViewById(R.id.confirmpassword);
                 final TextView qualification = (TextView) findViewById(R.id.qualification);
+                final TextView city = (TextView) findViewById(R.id.city);
 
 
                 final String Name = name.getText().toString();
@@ -120,6 +122,7 @@ public class registerStudent extends AppCompatActivity {
                 final String Pass = pass.getText().toString();
                 final String Cpy_Pass = pass_cpy.getText().toString();
                 final String Quali = qualification.getText().toString();
+                final String x = city.getText().toString();
 
                 if (TextUtils.isEmpty(Name))
                 {
@@ -210,7 +213,7 @@ public class registerStudent extends AppCompatActivity {
                                 pb.dismiss();
                                 sp.edit().putString("userClass", "Student").apply();
                                 sp.edit().putBoolean("loginStatus", true).apply();
-                                
+
                                 Toast.makeText(getApplicationContext(), "Registration Successful", Toast.LENGTH_LONG).show();
                                 Newpage.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 Newpage.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
