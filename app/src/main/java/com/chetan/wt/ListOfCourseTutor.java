@@ -341,6 +341,11 @@ public class ListOfCourseTutor extends AppCompatActivity
             Intent it=new Intent(ListOfCourseTutor.this,feedback_activity.class);
             startActivity(it);
         }
+        else if(id==R.id.changeloc)
+        {
+            Intent it=new Intent(ListOfCourseTutor.this,MapsActivity.class);
+            startActivity(it);
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

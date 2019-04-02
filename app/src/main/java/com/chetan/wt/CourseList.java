@@ -351,7 +351,10 @@ public class CourseList extends AppCompatActivity implements NavigationView.OnNa
         } else if (id == R.id.my_profile) {
             intent = new Intent(getApplicationContext(),MyProfileStudent.class);
             startActivity(intent);
-        } else if (id == R.id.logout) {
+        }
+
+
+        else if (id == R.id.logout) {
             FirebaseAuth fbu=FirebaseAuth.getInstance();
             fbu.signOut();
             //Welcome.loginState = 0;
@@ -372,6 +375,11 @@ public class CourseList extends AppCompatActivity implements NavigationView.OnNa
         }  else if(id == R.id.feedback_nav)
         {
             intent = new Intent(getApplicationContext(),feedback_activity.class);
+            startActivity(intent);
+        }
+        else if(id==R.id.stu_notifications)
+        {
+            intent=new Intent(getApplicationContext(),StudentNotifications.class);
             startActivity(intent);
         }
 

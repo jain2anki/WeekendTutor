@@ -1,14 +1,21 @@
 package com.chetan.wt;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -19,6 +26,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -55,7 +64,6 @@ public class TutorRegistration extends AppCompatActivity {
     String pass=new String();
     String cpass=new String();
     String qf=new String();
-    String city=new String();
     String val=new String();
     Bitmap bitmap;
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -70,6 +78,16 @@ public class TutorRegistration extends AppCompatActivity {
     String validEmail="[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z.]+";
     String validName="[a-zA-Z ]+";
     String validPass="^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=*!%(),.':;<>/?{}|+-_])(?=\\S+$).{6,}$";
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
+    private FusedLocationProviderClient mFusedLocationClient;
+    Double latittude,longitude;
+    double[] latarray = new double[5];
+    double[] lonarray = new double[5];
+    String[] places = new String[5];
+    String city;
+    int a=1;
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -95,13 +113,28 @@ public class TutorRegistration extends AppCompatActivity {
         password=(EditText)findViewById(R.id.password);
         cpassword=(EditText)findViewById(R.id.confirmpassword);
         qfview=(EditText)findViewById(R.id.qualification);
-        cityview=(EditText)findViewById(R.id.city);
         b=(Button)findViewById(R.id.registerbutton);
         //b2=(Button)findViewById(R.id.backbut);
         profiledp=(ImageButton)findViewById(R.id.dp);
         pb=new ProgressDialog(this);
         fa=FirebaseAuth.getInstance();
         dbr= FirebaseDatabase.getInstance().getReference("users");
+        latarray[0] = 12.917;
+        latarray[1] = 13.3323;
+        latarray[2] = 12.9716;
+        latarray[3] = 12.5033;
+        latarray[4] = 15.2993;
+        lonarray[0] = 74.85603;
+        lonarray[1] = 74.746;
+        lonarray[2] = 77.5946;
+        lonarray[3] = 74.9896;
+        lonarray[4] = 74.124;
+        places[0] = "mangalore";
+        places[1] = "udupi";
+        places[2] = "bangalore";
+        places[3] = "kasaragod";
+        places[4] = "goa";
+
         b.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -109,8 +142,26 @@ public class TutorRegistration extends AppCompatActivity {
                 email=emailview.getText().toString().trim();
                 pass=password.getText().toString();
                 cpass=cpassword.getText().toString();
-                city=cityview.getText().toString().trim();
                 qf=qfview.getText().toString().trim();
+                mFusedLocationClient = LocationServices.getFusedLocationProviderClient(TutorRegistration.this);
+                fetchLocation();
+                if(latittude==null && longitude==null){
+                    latittude=13.01120967137455;
+                    longitude=74.79212522493073;
+                }
+                int i,index=0;
+                Double dis=0.0,near=1000000.0;
+                for(i=0;i<5;i++){
+                    dis=(latittude-latarray[i])*(latittude-latarray[i])+(longitude-lonarray[i])*(longitude-lonarray[i]);
+                    if(dis<near){
+                        near=dis;
+                        index=i;
+                    }
+                }
+                city=places[index];
+                latittude=latarray[index];
+                longitude=lonarray[index];
+                Toast.makeText(getApplicationContext(),"the location is "+city,Toast.LENGTH_SHORT).show();
                 if(pass.equalsIgnoreCase(""))
                 {
                     password.setError("This is a required field");
@@ -131,11 +182,7 @@ public class TutorRegistration extends AppCompatActivity {
                 {
                     qfview.setError("This is a required field");
                 }
-                if(city.equalsIgnoreCase(""))
-                {
-                    cityview.setError("This is a required field");
-                }
-                if(pass.matches(validPass)&&Name.matches(validName)&&email.matches(validEmail)&&pass.equals(cpass)&&Name.length()!=0&&email.length()!=0&&pass.length()!=0&&cpass.length()!=0&&qf.length()!=0&&city.length()!=0)
+                if(pass.matches(validPass)&&Name.matches(validName)&&email.matches(validEmail)&&pass.equals(cpass)&&Name.length()!=0&&email.length()!=0&&pass.length()!=0&&cpass.length()!=0&&qf.length()!=0)
                 {
 
                     pb.setMessage("Registering...");
@@ -191,10 +238,10 @@ public class TutorRegistration extends AppCompatActivity {
                                     });}
 
                                 if(flag==0){
-                                    us=new user(id,Name,email,qf,city);
+                                    us=new user(id,Name,email,qf,city,latittude,longitude);
                                     us.setWallet(0);}
                                 else{
-                                    us=new user(id,Name,email,qf,city,downloadUrl);
+                                    us=new user(id,Name,email,qf,city,downloadUrl,latittude,longitude);
                                     us.setWallet(0);
                                 }
                                 dbr.child(id).setValue(us);
@@ -273,5 +320,82 @@ public class TutorRegistration extends AppCompatActivity {
     public boolean onSupportNavigateUp(){
         finish();
         return true;
+    }
+    private void fetchLocation() {
+
+    if(a==0) {
+        if (ContextCompat.checkSelfPermission(TutorRegistration.this,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(TutorRegistration.this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+                new AlertDialog.Builder(this)
+                        .setTitle("Required Location Permission")
+                        .setMessage("You have to give this permission to acess this feature")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                ActivityCompat.requestPermissions(TutorRegistration.this,
+                                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(TutorRegistration.this,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+    }else {
+            // Permission has already been granted
+            mFusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                // Logic to handle location object
+                                latittude = location.getLatitude();
+                                longitude = location.getLongitude();
+                            }
+
+                        }
+                    });
+
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                //abc
+            }else{
+
+            }
+        }
     }
 }

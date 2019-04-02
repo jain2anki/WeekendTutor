@@ -1,7 +1,18 @@
 package com.chetan.wt;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +22,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,18 +49,29 @@ public class CourseView extends AppCompatActivity {
     EditText coursename,tutorName,Venue,Time,Duration,courseAgenda,course_date,price;
     String course_name,tutor_name,venue,time,duration,courseagenda,coursedate,pr;
     Button Submit,delete;
-    String id,TId;
+    String id,TId,c,d,SID;
+    DatabaseReference notify;
+    DatabaseReference databaseReference2;
+    FirebaseDatabase databaseReference3;
+    TutorNotification notification = new TutorNotification();
+    Button b1;
+    private FusedLocationProviderClient mFusedLocationClient;
+    Double latittude,longitude;
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_view);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        SID=user.getUid();
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.startblue1)));
         setTitle("Edit Details");
         assert getSupportActionBar() != null;   //null check
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         coursename = (EditText)findViewById(R.id.courseName);
-        coursename.setText(getIntent().getStringExtra("Course_name"));
+        c=getIntent().getStringExtra("Course_name");
+        coursename.setText(c);
 
 
         id = getIntent().getStringExtra("CourseID");
@@ -63,12 +91,14 @@ public class CourseView extends AppCompatActivity {
         courseAgenda.setText(getIntent().getStringExtra("agenda"));
 
         course_date = (EditText)findViewById(R.id.course_date);
-        course_date.setText(getIntent().getStringExtra("date"));
+        d=getIntent().getStringExtra("date");
+        coursename.setText(d);
 
         price = findViewById(R.id.price);
         price.setText(getIntent().getStringExtra("price"));
 
         TId = getIntent().getStringExtra("TId");
+
 
         // final long id = getIntent().getLongExtra("id",0);
 
@@ -87,8 +117,9 @@ public class CourseView extends AppCompatActivity {
                 courseagenda = courseAgenda.getText().toString();
                 coursedate = course_date.getText().toString();
                 pr = price.getText().toString();
+
                 try {
-                    updateCourse(id,course_name,courseagenda,coursedate,time,venue,duration,tutor_name);
+                    updateCourse(id,course_name,courseagenda,coursedate,time,venue,duration,tutor_name,latittude,longitude);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -103,7 +134,7 @@ public class CourseView extends AppCompatActivity {
         });
     }
 
-    public void updateCourse(String id,String course_name,String courseagenda,String coursedate,String time,String venue,String duration,String tutor_name) throws ParseException {
+    public void updateCourse(String id,String course_name,String courseagenda,String coursedate,String time,String venue,String duration,String tutor_name,Double latittude,Double longitude) throws ParseException {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Tutor Courses").child(id);
 
         int flag=1;
@@ -214,6 +245,10 @@ public class CourseView extends AppCompatActivity {
         databaseReference.removeValue();
 
         final DatabaseReference databaseReference1 = FirebaseDatabase.getInstance().getReference("Student Courses");
+        databaseReference2=FirebaseDatabase.getInstance().getReference("Students");
+        databaseReference3=FirebaseDatabase.getInstance();
+        notification.setCourse_name("COURSE NAME:"+c);
+        notification.setDate("DATE:"+d);
         ArrayList<String> deleteKey = new ArrayList<>();
 
         databaseReference1.addValueEventListener(new ValueEventListener() {
@@ -221,11 +256,13 @@ public class CourseView extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds:dataSnapshot.getChildren()){
                     for (DataSnapshot ds1:ds.getChildren()){
-                        System.out.println(ds1.getKey());
                         if(ds1.getKey().equals(id)){
                             Log.i("GOES","INSIDE");
-                            System.out.println("INSIDE" + ds1.getKey());
+                            String x= (String) ds1.child("name").getValue();
+                            notification.setStudent_name(x);
                             databaseReference1.child(ds.getKey()).child(ds1.getKey()).removeValue();
+                            notify = databaseReference3.getReference("Student Notifications").child(ds.getKey());
+                            notify.push().setValue(notification);
                         }
                     }
                 }
