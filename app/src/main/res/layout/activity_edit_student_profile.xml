@@ -8,7 +8,8 @@
     android:background="@drawable/book">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp">
 
     <TextView
         android:id="@+id/nameview"
@@ -29,8 +30,7 @@
             android:layout_below="@id/nameview"
             android:ems="10"
             android:hint=""
-            android:textColor="#ffff8800"
-            android:textStyle="bold" />
+            android:textColor="#ffff8800" />
 
     <TextView
         android:id="@+id/emailview"
@@ -56,8 +56,7 @@
             android:padding="2dp"
             android:text="abc@example.com"
             android:textColor="#ffff8800"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="18sp" />
     <ImageButton
         android:id="@+id/dp"
         android:layout_marginRight="10dp"
@@ -91,8 +90,7 @@
             android:ems="10"
             android:hint=""
             android:inputType="textPersonName"
-            android:textColor="#ffff8800"
-            android:textStyle="bold" />
+            android:textColor="#ffff8800" />
 
     <TextView
         android:id="@+id/cityview"
@@ -114,22 +112,22 @@
             android:ems="10"
             android:hint=""
             android:inputType="textPersonName"
-            android:textColor="#ffff8800"
-            android:textStyle="bold" />
+            android:textColor="#ffff8800" />
 
         <Button
             android:id="@+id/save"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/editScity"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/editScity"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="100dp"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="0dp"
-            android:background="@drawable/buttonstyle"
-            android:text="Save Changes" />
+            android:background="@drawable/custom1"
+            android:text="Save Changes"
+            android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
     </RelativeLayout>
 </ScrollView>
