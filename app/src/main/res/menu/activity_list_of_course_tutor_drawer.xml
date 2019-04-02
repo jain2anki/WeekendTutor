@@ -11,6 +11,9 @@
             android:id="@+id/nav_gallery"
             android:title="Notifications" />
         <item
+            android:id="@+id/changeloc"
+            android:title="Change location"/>
+        <item
             android:id="@+id/nav_slideshow"
             android:title="My Wallet" />
         <item

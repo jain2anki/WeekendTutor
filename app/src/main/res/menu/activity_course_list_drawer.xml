@@ -8,6 +8,9 @@
             android:id="@+id/my_profile"
             android:title="My Profile" />
         <item
+            android:title="Notification"
+            android:id="@+id/stu_notifications"/>
+        <item
             android:id="@+id/my_courses"
             android:title="My Courses" />
         <item

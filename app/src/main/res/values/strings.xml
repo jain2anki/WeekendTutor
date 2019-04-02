@@ -34,5 +34,6 @@
     <string name="email_6">EMAIL: siddharth12375@gmail.com</string>
     <string name="nav_name"></string>
     <string name="nav_email" />
+    <string name="title_activity_maps">Map</string>
 </resources>
 
